@@ -1,0 +1,29 @@
+on run
+	-- Step 1: Open Loans List in Chrome and Copy Data
+	tell application "Google Chrome"
+		activate
+		open location "https://192.168.0.201/loans/list?status=out&limit=50"
+		delay 5 -- Allow time for the page to load
+	end tell
+	
+	-- Select All + Copy
+	tell application "System Events"
+		keystroke "a" using command down -- Select all
+		delay 1
+		keystroke "c" using command down -- Copy
+		delay 1
+	end tell
+	
+	-- Step 2: Open Google Sheets and Paste Data
+	tell application "Google Chrome"
+		activate
+		open location "https://docs.google.com/spreadsheets/d/1VfhGpLdKRNEjZh91JyuNDPo5VdWfkh_1RAZai3hy0iE/edit?gid=0#gid=0"
+		delay 5 -- Allow Google Sheets to load
+	end tell
+	
+	-- Ensure Google Sheets is active and paste data
+	tell application "System Events"
+		keystroke "v" using command down -- Paste
+		delay 1
+	end tell
+end run
