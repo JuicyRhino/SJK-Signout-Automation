@@ -1,0 +1,112 @@
+import time
+import pyperclip
+import pyautogui
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.action_chains import ActionChains
+
+# Set up Chrome driver for Mac
+chrome_path = "/usr/local/bin/chromedriver" 
+service = Service(chrome_path)
+driver = webdriver.Chrome(service=service)
+
+# Open Loans List and Copy Data
+driver.get("https://192.168.0.201/loans/list?status=out")
+time.sleep(5)  # Wait for the page to load
+for _ in range(4):
+    pyautogui.press("tab")
+    time.sleep(0.2)
+
+# Getting past the "unsecure page" warning
+pyautogui.press ("enter")
+pyautogui.press ("tab")
+pyautogui.press ("enter")
+
+# Select all and copy (Command+A and Command+C on Mac)
+ActionChains(driver).key_down(Keys.COMMAND).send_keys('a').key_up(Keys.COMMAND).perform()
+time.sleep(1)
+ActionChains(driver).key_down(Keys.COMMAND).send_keys('c').key_up(Keys.COMMAND).perform()
+time.sleep(1)
+
+# Get copied data from clipboard
+loans_data = pyperclip.paste()
+
+# Open Google Sheets and Paste Data 
+driver.get("https://docs.google.com") # Opening docs first for signin
+time.sleep(5)  
+input ("Press enter to confirm you have opened Google Sheets page: ")
+time.sleep(5)
+driver.get("https://docs.google.com/spreadsheets/d/1VfhGpLdKRNEjZh91JyuNDPo5VdWfkh_1RAZai3hy0iE/edit?gid=0#gid=0")
+time.sleep(5)  # Allow Google Sheets to load
+
+#Paste into Sheets
+pyautogui.keyDown("command")
+pyautogui.press("v")
+pyautogui.keyUp("command")
+time.sleep(1)
+
+#open page again
+driver.get("https://192.168.0.201/loans/list?status=out")
+time.sleep(5)  # Wait for the page to load
+for _ in range(38):
+    pyautogui.press("tab")
+    time.sleep(0.2)
+
+pyautogui.press("enter")
+time.sleep(5)
+
+# Select all and copy (Command+A and Command+C on Mac)
+ActionChains(driver).key_down(Keys.COMMAND).send_keys('a').key_up(Keys.COMMAND).perform()
+time.sleep(1)
+ActionChains(driver).key_down(Keys.COMMAND).send_keys('c').key_up(Keys.COMMAND).perform()
+time.sleep(1)
+
+driver.get("https://docs.google.com/spreadsheets/d/1VfhGpLdKRNEjZh91JyuNDPo5VdWfkh_1RAZai3hy0iE/edit?gid=0#gid=0")
+time.sleep(5) 
+
+# Navigate to cell A30
+pyautogui.keyDown("command")  # Hold Command
+pyautogui.press("j")          # Press J while holding Command
+pyautogui.keyUp("command")    # Release Command
+# Open 'Go to' prompt in Google Sheets
+time.sleep(1)
+pyautogui.write("A30")
+pyautogui.press("enter")
+time.sleep(1)
+
+# Paste data
+pyautogui.hotkey("command", "v")
+time.sleep(1)
+
+driver.get("https://192.168.0.201/loans/list?status=out")
+time.sleep(5)  # Wait for the page to load
+for _ in range(38):
+    pyautogui.press("tab")
+    time.sleep(0.2)
+
+pyautogui.press("enter")
+pyautogui.press("enter")
+pyautogui.press("tab")
+time.sleep(5)
+
+# Select all and copy (Command+A and Command+C on Mac)
+ActionChains(driver).key_down(Keys.COMMAND).send_keys('a').key_up(Keys.COMMAND).perform()
+time.sleep(1)
+ActionChains(driver).key_down(Keys.COMMAND).send_keys('c').key_up(Keys.COMMAND).perform()
+time.sleep(1)
+
+driver.get("https://docs.google.com/spreadsheets/d/1VfhGpLdKRNEjZh91JyuNDPo5VdWfkh_1RAZai3hy0iE/edit?gid=0#gid=0")
+time.sleep(5) 
+
+# Paste into Cell A60 
+pyautogui.keyDown("command")
+pyautogui.press("j")
+pyautogui.keyUp("command")
+time.sleep(1)
+pyautogui.write("A60")
+pyautogui.press("enter")
+time.sleep(1)
+pyautogui.hotkey("command", "v")
+time.sleep(1)
