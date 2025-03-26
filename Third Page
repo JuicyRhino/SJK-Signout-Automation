@@ -1,0 +1,46 @@
+on run
+	-- Step 1: Open Loans List page
+	tell application "Google Chrome"
+		activate
+		open location "https://192.168.0.201/loans/list?status=out&limit=50"
+		delay 5 -- Wait for the page to load
+	end tell
+	
+	-- Step 2: Simulate pressing Tab 38 times to navigate the page
+	tell application "System Events"
+		repeat 38 times
+			keystroke (key code 48) -- Tab key
+			delay 0.2 -- Small delay between keystrokes
+		end repeat
+		keystroke (ASCII character 13) -- Press Enter
+		keystroke (ASCII character 13) -- Press Enter
+		keystroke (key code 48) -- Tab key
+		delay 5 -- Wait for the next page to load
+	end tell
+	
+	-- Step 3: Copy the page content
+	tell application "System Events"
+		keystroke "a" using command down -- Select all
+		delay 1
+		keystroke "c" using command down -- Copy
+		delay 1
+	end tell
+	
+	-- Step 4: Open Google Sheets and Paste into Cell A30
+	tell application "Google Chrome"
+		open location "https://docs.google.com/spreadsheets/d/1VfhGpLdKRNEjZh91JyuNDPo5VdWfkh_1RAZai3hy0iE/edit?gid=0#gid=0"
+		delay 5 -- Allow Google Sheets to load
+	end tell
+	
+	-- Select cell A60 in Google Sheets and paste the copied data
+	tell application "System Events"
+		-- Navigate to A60 (can adjust depending on your setup)
+		keystroke "j" using command down -- Open 'Go to' prompt in Google Sheets
+		delay 1
+		keystroke "A60" -- Specify cell A60
+		keystroke (ASCII character 13) -- Press Enter
+		delay 1
+		keystroke "v" using command down -- Paste the data
+		delay 1
+	end tell
+end run
